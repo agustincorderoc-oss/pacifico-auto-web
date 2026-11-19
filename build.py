@@ -171,7 +171,12 @@ def construir(con_ejemplo, con_borrador=False):
         BORRADOR.mkdir(exist_ok=True)
         for nombre in ("css", "img", "js"):
             shutil.copytree(WEB / nombre, BORRADOR / nombre, dirs_exist_ok=True)
-        shutil.copyfile(WEB / "index.html", BORRADOR / "index.html")
+        # La portada del borrador se copia solo la primera vez: si ya existe, puede tener
+        # cambios en prueba (ej. fotos en la portada) y no se pisa.
+        if not (BORRADOR / "index.html").exists():
+            shutil.copyfile(WEB / "index.html", BORRADOR / "index.html")
+        else:
+            print("Portada del borrador conservada (_borrador/index.html no se reemplaza).")
         OUT = BORRADOR / "autos"
     autos = []
     for carpeta in sorted(AUTOS.iterdir()):
