@@ -74,3 +74,5 @@ footer{background:var(--ocean);color:#cfe0ea;text-align:center;padding:1.5rem;fo
 
 .brand .logo{height:48px;width:auto;display:block}
 .footer-logo{height:60px;width:auto;display:block;margin:0 auto .5rem;border-radius:8px}
+.vendidos{border-top:1px solid #dfe9ec}
+.auto-card.vendido img{filter:grayscale(.6);opacity:.85}

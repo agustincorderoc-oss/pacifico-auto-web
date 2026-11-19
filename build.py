@@ -257,22 +257,29 @@ def construir(con_ejemplo, con_borrador=False):
         (OUT / a["slug"] / "index.html").write_text(
             pagina(a["nombre"], contenido, "../../", a["ejemplo"], a["estado"] == "borrador"), encoding="utf-8")
 
-    orden = {"disponible": 0, "reservado": 1, "vendido": 2}
-    tarjetas = []
-    for a in sorted(autos, key=lambda a: (orden.get(a["estado"], 0), a["d"].get("publicado", "")), reverse=False):
+    def tarjeta(a):
         d = a["d"]
         img = ('<img src="%s/fotos/%s" alt="%s" loading="lazy">' % (a["slug"], quote(a["fotos"][0]), e(a["nombre"]))
                if a["fotos"] else '<div class="sin-foto"></div>')
         sub = " · ".join(x for x in (miles(d["km"]) + " km" if d.get("km") else "",
                                      d.get("transmision", ""), d.get("ubicacion", "")) if x)
-        tarjetas.append("""<a class="auto-card" href="{slug}/index.html">
+        return """<a class="auto-card {estado}" href="{slug}/index.html">
   {img}
   <span class="estado {estado}">{est}</span>
   <h3>{nombre}</h3>
   <p class="muted small">{sub}</p>
   <p class="precio">{precio}</p>
 </a>""".format(slug=a["slug"], img=img, estado=a["estado"], est=bi(a["est_en"], a["est_es"]),
-               nombre=e(a["nombre"]), sub=e(sub), precio=e(a["precio"])))
+               nombre=e(a["nombre"]), sub=e(sub), precio=e(a["precio"]))
+
+    # Dos secciones: en venta (disponibles y reservados) y vendidos. Los más nuevos primero.
+    orden = {"disponible": 0, "reservado": 1, "borrador": 2}
+    en_venta = sorted((a for a in autos if a["estado"] != "vendido"),
+                      key=lambda a: a["d"].get("publicado", ""), reverse=True)
+    en_venta.sort(key=lambda a: orden.get(a["estado"], 0))  # estable: disponibles primero
+    vendidos = sorted((a for a in autos if a["estado"] == "vendido"),
+                      key=lambda a: a["d"].get("vendido") or a["d"].get("publicado", ""), reverse=True)
+    tarjetas = [tarjeta(a) for a in en_venta]
     if not tarjetas:
         tarjetas.append('<p class="center muted">%s</p>' % bi(
             "No cars listed right now. Message me and I'll find yours.",
@@ -282,10 +289,21 @@ def construir(con_ejemplo, con_borrador=False):
   <p class="center muted">{s}</p>
   <div class="grid autos">{tarjetas}</div>
 </section>""".format(
-        t=bi("Cars I've inspected", "Autos que ya revisé"),
+        t=bi("Cars for sale", "Autos en venta"),
         s=bi("One owner · clean title · no accidents. Each one inspected by me.",
              "Un dueño · título limpio · sin accidentes. Cada uno revisado por mí."),
         tarjetas="\n".join(tarjetas))
+    if vendidos:
+        lista += """
+<section class="vendidos" id="vendidos">
+  <h2>{t}</h2>
+  <p class="center muted">{s}</p>
+  <div class="grid autos">{tarjetas}</div>
+</section>""".format(
+            t=bi("Sold", "Vendidos"),
+            s=bi("Cars I've already sold. Want one like these? Message me and I'll find it.",
+                 "Autos que ya vendí. ¿Quiere uno así? Escríbame y se lo busco."),
+            tarjetas="\n".join(tarjeta(a) for a in vendidos))
     (OUT / "index.html").write_text(
         pagina("Cars / Autos", lista, "../", any(a["ejemplo"] for a in autos), any(a["estado"] == "borrador" for a in autos)), encoding="utf-8")
     return autos
