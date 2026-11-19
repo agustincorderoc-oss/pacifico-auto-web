@@ -1,4 +1,4 @@
-# pacifico-auto.com — sitio web
+# pacificoautocr.com — sitio web
 
 Sitio estático (HTML + CSS + JS), bilingüe EN/ES. Pensado para publicarse en GitHub Pages y conectar el dominio de GoDaddy.
 Contenido sacado del knowledge graph (`notas/organizaciones/Pacífico Auto.md` y notas relacionadas).

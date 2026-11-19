@@ -1,4 +1,4 @@
-# Cómo publicar pacifico-auto.com
+# Cómo publicar pacificoautocr.com
 
 Guía paso a paso. Cada paso que sale de esta Mac lo hace Agustín o se hace solo con su sí.
 
@@ -21,10 +21,10 @@ git push -u origin main
 
 ## 2. Encender GitHub Pages
 En el repositorio → **Settings → Pages** → Source: *Deploy from a branch* → Branch `main`, carpeta `/ (root)` → **Save**.
-El archivo `CNAME` ya dice `pacifico-auto.com`, así que GitHub toma el dominio solo.
+El archivo `CNAME` ya dice `pacificoautocr.com`, así que GitHub toma el dominio solo.
 
 ## 3. DNS en GoDaddy (con su sí)
-GoDaddy → **My Products → pacifico-auto.com → DNS → Manage DNS**.
+GoDaddy → **My Products → pacificoautocr.com → DNS → Manage DNS**.
 
 Borrar (o editar) el registro **A** con nombre `@` que trae GoDaddy ("Parked"/"WebsiteBuilder") y dejar estos:
 
@@ -42,7 +42,7 @@ Si el sitio está hecho con el Website Builder de GoDaddy, hay que desconectarlo
 ## 4. Verificar
 - Esperar de 10 minutos a unas horas.
 - En **Settings → Pages**, cuando el chequeo de DNS salga en verde, marcar **Enforce HTTPS**.
-- Abrir https://pacifico-auto.com y https://www.pacifico-auto.com.
+- Abrir https://pacificoautocr.com y https://www.pacificoautocr.com.
 
 ## Para actualizar después
 Cambiar archivos aquí → commit → él corre `git push`. La página se actualiza en 1–2 minutos.
