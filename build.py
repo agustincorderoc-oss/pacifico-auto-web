@@ -188,12 +188,10 @@ def construir(con_ejemplo, con_borrador=False):
         fotos = preparar_fotos(carpeta / "fotos", OUT / slug / "fotos")
         nombre = " ".join(x for x in (d.get("año"), d.get("marca"), d.get("modelo"), d.get("version")) if x)
         est_en, est_es = ESTADOS.get(estado, ESTADOS["disponible"])
-        if d.get("precio_usd"):
-            precio = "$" + miles(d["precio_usd"])
-        elif d.get("precio_crc"):
-            precio = "₡" + miles(d["precio_crc"])
-        else:
-            precio = ""
+        # Si hay los dos precios se muestran ambos: dólares primero, colones después.
+        precio = " · ".join(x for x in (
+            "$" + miles(d["precio_usd"]) if d.get("precio_usd") else "",
+            "₡" + miles(d["precio_crc"]) if d.get("precio_crc") else "") if x)
         autos.append(dict(d=d, sec=sec, slug=slug, fotos=fotos, nombre=nombre, estado=estado,
                           est_en=est_en, est_es=est_es, precio=precio, ejemplo=ejemplo))
 
