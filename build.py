@@ -35,6 +35,7 @@ CAMPOS = [  # (clave, EN, ES)
     ("transmision", "Transmission", "Transmisión"),
     ("combustible", "Fuel", "Combustible"),
     ("traccion", "Drivetrain", "Tracción"),
+    ("suspension", "Suspension", "Suspensión"),
     ("color", "Colour", "Color"),
     ("dueños", "Owners", "Dueños"),
     ("ubicacion", "Location", "Ubicación"),
@@ -187,7 +188,12 @@ def construir(con_ejemplo, con_borrador=False):
         fotos = preparar_fotos(carpeta / "fotos", OUT / slug / "fotos")
         nombre = " ".join(x for x in (d.get("año"), d.get("marca"), d.get("modelo"), d.get("version")) if x)
         est_en, est_es = ESTADOS.get(estado, ESTADOS["disponible"])
-        precio = "$" + miles(d["precio_usd"]) if d.get("precio_usd") else ""
+        if d.get("precio_usd"):
+            precio = "$" + miles(d["precio_usd"])
+        elif d.get("precio_crc"):
+            precio = "₡" + miles(d["precio_crc"])
+        else:
+            precio = ""
         autos.append(dict(d=d, sec=sec, slug=slug, fotos=fotos, nombre=nombre, estado=estado,
                           est_en=est_en, est_es=est_es, precio=precio, ejemplo=ejemplo))
 
