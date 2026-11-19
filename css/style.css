@@ -44,3 +44,30 @@ cite{display:block;margin-top:.6rem;font-style:normal;color:var(--muted);font-si
 .form input,.form select,.form textarea{font:inherit;padding:.65rem;border:1px solid #cfd8dc;border-radius:8px;background:#fff}
 footer{background:var(--ocean);color:#cfe0ea;text-align:center;padding:1.5rem;font-size:.9rem}
 @media(max-width:700px){.top nav{display:none}.hero{padding-top:3rem}}
+/* --- Autos --- */
+.aviso-ejemplo{margin:0;background:#b3261e;color:#fff;text-align:center;padding:.5rem;font-weight:700;font-size:.9rem}
+.grid.autos{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.auto-card{position:relative;display:block;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(14,59,92,.07);text-decoration:none;color:var(--ink);padding-bottom:1rem}
+.auto-card img,.auto-card .sin-foto{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:#dfe9ec}
+.auto-card h3{margin:.8rem 1rem .2rem;color:var(--ocean)}
+.auto-card p{margin:.1rem 1rem}
+.auto-card .estado{position:absolute;top:.7rem;left:.7rem}
+.estado{display:inline-block;border-radius:20px;padding:.2rem .7rem;font-size:.8rem;font-weight:700;background:var(--teal);color:#fff}
+.estado.reservado{background:var(--sand);color:var(--ocean)}
+.estado.vendido{background:var(--muted)}
+.precio{font-size:1.4rem;font-weight:700;color:var(--ocean);margin:.3rem 0}
+.auto{max-width:1100px;margin:0 auto;padding-top:1.5rem}
+.auto h1{color:var(--ocean);font-size:clamp(1.6rem,4vw,2.3rem);margin:.5rem 0 .2rem}
+.migas a{text-decoration:none}
+.auto-cols{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:2rem;align-items:start}
+.galeria>img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;background:#dfe9ec;display:block}
+.galeria.sin-fotos{aspect-ratio:3/2;display:grid;place-items:center;background:#dfe9ec;border-radius:12px;color:var(--muted)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:.5rem;margin-top:.5rem}
+.thumbs img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:6px;cursor:pointer;opacity:.7;border:2px solid transparent}
+.thumbs img.activa,.thumbs img:hover{opacity:1;border-color:var(--sand)}
+.ficha{display:grid;grid-template-columns:1fr 1fr;gap:.6rem 1rem;margin:1rem 0}
+.ficha dt{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.ficha dd{margin:0;font-weight:600}
+.lang-en a.btn.es,.lang-es a.btn.en{display:none}
+.auto-texto{max-width:720px;margin-top:2rem}
+@media(max-width:800px){.auto-cols{grid-template-columns:1fr}}

@@ -5,7 +5,10 @@
   setLang(saved||((navigator.language||'en').slice(0,2)==='es'?'es':'en'));
   document.querySelector('.lang-toggle').addEventListener('click',function(){setLang(root.lang==='en'?'es':'en')});
   document.getElementById('year').textContent=new Date().getFullYear();
-  document.getElementById('wa-form').addEventListener('submit',function(e){
+  var thumbs=document.querySelectorAll('.thumbs img'),principal=document.getElementById('foto-principal');
+  thumbs.forEach(function(t,i){if(!i)t.classList.add('activa');t.addEventListener('click',function(){principal.src=t.src;thumbs.forEach(function(x){x.classList.remove('activa')});t.classList.add('activa')})});
+  var form=document.getElementById('wa-form');if(!form)return;
+  form.addEventListener('submit',function(e){
     e.preventDefault();var f=e.target;
     var msg=(root.lang==='es'?'Hola, soy ':'Hi, I\'m ')+f.name.value+'.\n'+
       (root.lang==='es'?'Servicio: ':'Service: ')+f.service.value+'\n'+
