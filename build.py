@@ -154,6 +154,7 @@ def pagina(titulo, contenido, raiz, ejemplo=False, borrador=False):
 </main>
 <footer>
   <p>© <span id="year">2026</span> Pacífico Auto · Guanacaste · Nicoya · Puntarenas · Costa Rica</p>
+  <p class="social"><a href="https://www.instagram.com/pacificoauto.cr/" target="_blank" rel="noopener">Instagram @pacificoauto.cr</a> · <a href="https://www.facebook.com/profile.php?id=61596536469097" target="_blank" rel="noopener">Facebook</a></p>
 </footer>
 <script src="{r}js/main.js"></script>
 </body>

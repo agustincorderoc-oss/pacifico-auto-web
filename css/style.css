@@ -43,6 +43,7 @@ cite{display:block;margin-top:.6rem;font-style:normal;color:var(--muted);font-si
 .form label{display:grid;gap:.3rem;font-weight:600;color:var(--ocean)}
 .form input,.form select,.form textarea{font:inherit;padding:.65rem;border:1px solid #cfd8dc;border-radius:8px;background:#fff}
 footer{background:var(--ocean);color:#cfe0ea;text-align:center;padding:1.5rem;font-size:.9rem}
+footer .social a{color:#fff}
 @media(max-width:700px){.top nav{display:none}.hero{padding-top:3rem}}
 /* --- Autos --- */
 .aviso-ejemplo{margin:0;background:#b3261e;color:#fff;text-align:center;padding:.5rem;font-weight:700;font-size:.9rem}
