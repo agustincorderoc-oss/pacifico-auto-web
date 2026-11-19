@@ -6,6 +6,7 @@ Crea  autos/index.html (lista) y autos/<auto>/index.html (detalle) en esta carpe
 
 Uso:  python3 build.py            -> solo autos reales
       python3 build.py --ejemplo  -> incluye también las carpetas _ejemplo-*
+      python3 build.py --borrador -> construye en _borrador/ (fuera de Git) incluyendo autos en borrador
 
 No borra nada y no publica nada: solo escribe archivos en esta carpeta.
 """
@@ -19,12 +20,14 @@ from urllib.parse import quote
 WEB = Path(__file__).resolve().parent
 AUTOS = WEB.parent / "pacifico-auto" / "autos"
 OUT = WEB / "autos"
+BORRADOR = WEB / "_borrador"  # vista previa local; está en .gitignore
 WHATSAPP = "50689505551"
 FOTO_EXT = {".jpg", ".jpeg", ".png", ".heic", ".svg", ".webp"}
 ESTADOS = {
     "disponible": ("Available", "Disponible"),
     "reservado": ("Reserved", "Reservado"),
     "vendido": ("Sold", "Vendido"),
+    "borrador": ("Draft", "Borrador"),
 }
 CAMPOS = [  # (clave, EN, ES)
     ("año", "Year", "Año"),
@@ -115,9 +118,11 @@ def bi(en, es, tag="span"):
     return '<%s class="en">%s</%s><%s class="es">%s</%s>' % (tag, en, tag, tag, es, tag)
 
 
-def pagina(titulo, contenido, raiz, ejemplo=False):
+def pagina(titulo, contenido, raiz, ejemplo=False, borrador=False):
     aviso = ('<p class="aviso-ejemplo">MUESTRA — datos y fotos de ejemplo, este auto no existe</p>'
              if ejemplo else "")
+    if borrador:
+        aviso += '<p class="aviso-ejemplo">BORRADOR — vista previa en este Mac, no publicar</p>'
     return """<!DOCTYPE html>
 <html lang="en" class="lang-en">
 <head>
@@ -157,7 +162,15 @@ def pagina(titulo, contenido, raiz, ejemplo=False):
            how=bi("How it works", "Cómo funciona"), cont=bi("Contact", "Contacto"))
 
 
-def construir(con_ejemplo):
+def construir(con_ejemplo, con_borrador=False):
+    global OUT
+    if con_borrador:
+        # Copia el sitio a _borrador/ y construye ahí: los borradores nunca tocan el sitio real.
+        BORRADOR.mkdir(exist_ok=True)
+        for nombre in ("css", "img", "js"):
+            shutil.copytree(WEB / nombre, BORRADOR / nombre, dirs_exist_ok=True)
+        shutil.copyfile(WEB / "index.html", BORRADOR / "index.html")
+        OUT = BORRADOR / "autos"
     autos = []
     for carpeta in sorted(AUTOS.iterdir()):
         ficha = carpeta / "ficha.md"
@@ -167,10 +180,12 @@ def construir(con_ejemplo):
         if ejemplo and not con_ejemplo:
             continue
         d, sec = leer_ficha(ficha)
+        estado = d.get("estado", "disponible").lower()
+        if estado == "borrador" and not con_borrador:
+            continue
         slug = carpeta.name.lstrip("_")
         fotos = preparar_fotos(carpeta / "fotos", OUT / slug / "fotos")
         nombre = " ".join(x for x in (d.get("año"), d.get("marca"), d.get("modelo"), d.get("version")) if x)
-        estado = d.get("estado", "disponible").lower()
         est_en, est_es = ESTADOS.get(estado, ESTADOS["disponible"])
         precio = "$" + miles(d["precio_usd"]) if d.get("precio_usd") else ""
         autos.append(dict(d=d, sec=sec, slug=slug, fotos=fotos, nombre=nombre, estado=estado,
@@ -236,7 +251,7 @@ def construir(con_ejemplo):
             en=cuerpo_html(a["sec"].get("en", [])), es=cuerpo_html(a["sec"].get("es", [])))
         (OUT / a["slug"]).mkdir(parents=True, exist_ok=True)
         (OUT / a["slug"] / "index.html").write_text(
-            pagina(a["nombre"], contenido, "../../", a["ejemplo"]), encoding="utf-8")
+            pagina(a["nombre"], contenido, "../../", a["ejemplo"], a["estado"] == "borrador"), encoding="utf-8")
 
     orden = {"disponible": 0, "reservado": 1, "vendido": 2}
     tarjetas = []
@@ -268,12 +283,12 @@ def construir(con_ejemplo):
              "Un dueño · título limpio · sin accidentes. Cada uno revisado por mí."),
         tarjetas="\n".join(tarjetas))
     (OUT / "index.html").write_text(
-        pagina("Cars / Autos", lista, "../", any(a["ejemplo"] for a in autos)), encoding="utf-8")
+        pagina("Cars / Autos", lista, "../", any(a["ejemplo"] for a in autos), any(a["estado"] == "borrador" for a in autos)), encoding="utf-8")
     return autos
 
 
 if __name__ == "__main__":
-    hechos = construir("--ejemplo" in sys.argv)
+    hechos = construir("--ejemplo" in sys.argv, "--borrador" in sys.argv)
     print("Autos construidos: %d" % len(hechos))
     for a in hechos:
         print("  - %s  [%s]  %d fotos%s" % (a["nombre"], a["estado"], len(a["fotos"]),
