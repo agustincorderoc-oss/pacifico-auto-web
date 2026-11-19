@@ -8,13 +8,13 @@ Guía paso a paso. Cada paso que sale de esta Mac lo hace Agustín o se hace sol
 - [ ] Las páginas de autos se generaron con `python3 build.py` (sin `--ejemplo`).
 - [ ] Nada privado de clientes ni de vendedores en las páginas (nombres, cédulas, teléfonos, placas si no quiere mostrarlas).
 
-## 1. Repositorio en GitHub online (con su sí)
+## 1. Repositorio en GitHub online — creado 2026-11-19: github.com/agustincorderoc-oss/pacifico-auto-web (público)
 1. Entrar a github.com con su cuenta (o crear una con pacificoautocr@gmail.com).
 2. **New repository** → nombre `pacifico-auto-web` → Public → sin README (ya existe aquí) → **Create**.
 3. En la Terminal, dentro de esta carpeta (lo corre él, porque el push está bloqueado para Claude):
 
 ```bash
-git remote add origin https://github.com/<SU-USUARIO>/pacifico-auto-web.git
+git remote add origin https://github.com/agustincorderoc-oss/pacifico-auto-web.git
 git branch -M main
 git push -u origin main
 ```
@@ -34,7 +34,7 @@ Borrar (o editar) el registro **A** con nombre `@` que trae GoDaddy ("Parked"/"W
 | A     | @      | 185.199.109.153          | 1 hora  |
 | A     | @      | 185.199.110.153          | 1 hora  |
 | A     | @      | 185.199.111.153          | 1 hora  |
-| CNAME | www    | `<SU-USUARIO>.github.io` | 1 hora  |
+| CNAME | www    | `agustincorderoc-oss.github.io` | 1 hora  |
 
 No tocar los registros **MX** ni **TXT** si existen (son del correo).
 Si el sitio está hecho con el Website Builder de GoDaddy, hay que desconectarlo del dominio primero; si no, GoDaddy vuelve a poner su registro A.
